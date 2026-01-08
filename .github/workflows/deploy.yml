@@ -37,8 +37,8 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          # This must point to where Vite actually puts the build files
-          path: './dist'
+          # This must match your outDir in vite.config.ts
+          path: './dist/public'
 
       - name: Deploy to GitHub Pages
         id: deployment
