@@ -27,15 +27,63 @@ const chapters = [
   }
 ];
 
+function FilmSprockets({ side }: { side: "left" | "right" }) {
+  return (
+    <div className={`absolute top-0 bottom-0 ${side === "left" ? "left-0" : "right-0"} w-6 bg-zinc-900 flex flex-col justify-between py-2 z-20`}>
+      {Array.from({ length: 12 }).map((_, i) => (
+        <div key={i} className="w-4 h-3 bg-zinc-800 rounded-sm mx-auto border border-zinc-700" />
+      ))}
+    </div>
+  );
+}
+
+function FilmFrame({ children, className = "" }: { children: React.ReactNode; className?: string }) {
+  return (
+    <div className={`relative bg-zinc-900 p-1 ${className}`}>
+      {/* Film strip container */}
+      <div className="relative">
+        {/* Sprocket holes - left */}
+        <FilmSprockets side="left" />
+        
+        {/* Sprocket holes - right */}
+        <FilmSprockets side="right" />
+        
+        {/* Image container with film border */}
+        <div className="mx-8 relative">
+          {/* Top film edge markings */}
+          <div className="absolute -top-1 left-0 right-0 h-1 bg-zinc-800 flex items-center justify-between px-4">
+            <span className="text-[6px] text-zinc-600 font-mono">KODAK 5207</span>
+            <span className="text-[6px] text-zinc-600 font-mono">24</span>
+          </div>
+          
+          {/* The actual image */}
+          <div className="border-4 border-zinc-800 relative overflow-hidden">
+            {children}
+            {/* Film grain overlay */}
+            <div className="absolute inset-0 bg-orange-500/5 mix-blend-overlay pointer-events-none" />
+          </div>
+          
+          {/* Bottom film edge markings */}
+          <div className="absolute -bottom-1 left-0 right-0 h-1 bg-zinc-800 flex items-center justify-between px-4">
+            <div className="flex gap-2">
+              {[1, 2, 3].map(n => (
+                <span key={n} className="text-[6px] text-zinc-600 font-mono">▲</span>
+              ))}
+            </div>
+            <span className="text-[6px] text-zinc-600 font-mono">35mm</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 export function StoryTimeline() {
   return (
     <section className="py-20 bg-card/50 relative overflow-hidden">
-      {/* Background Pattern */}
-      <div className="absolute inset-0 opacity-5">
-        <div className="absolute inset-0" style={{
-          backgroundImage: `repeating-linear-gradient(90deg, transparent, transparent 100px, hsl(25 95% 55% / 0.1) 100px, hsl(25 95% 55% / 0.1) 101px)`
-        }} />
-      </div>
+      {/* Vertical film strip decoration on sides */}
+      <div className="absolute left-8 top-0 bottom-0 w-px bg-zinc-800 hidden lg:block" />
+      <div className="absolute right-8 top-0 bottom-0 w-px bg-zinc-800 hidden lg:block" />
 
       <div className="container mx-auto px-4 relative z-10">
         <motion.div 
@@ -44,6 +92,11 @@ export function StoryTimeline() {
           whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
         >
+          <div className="inline-flex items-center gap-4 mb-6">
+            <div className="w-12 h-px bg-primary" />
+            <span className="text-xs text-muted-foreground tracking-[0.3em]">FILM REEL</span>
+            <div className="w-12 h-px bg-primary" />
+          </div>
           <h2 className="text-5xl md:text-7xl font-display tracking-wider mb-4">
             YOUR <span className="text-stroke text-primary">STORY</span>
           </h2>
@@ -62,39 +115,86 @@ export function StoryTimeline() {
                 index % 2 === 1 ? "md:flex-row-reverse" : ""
               }`}
             >
-              {/* Image */}
-              <div className="flex-1 w-full relative group">
-                <div className="absolute -inset-4 border border-primary/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-                <div className="relative overflow-hidden">
+              {/* Film Frame Image */}
+              <div className="flex-1 w-full relative">
+                <FilmFrame>
                   <img 
                     src={item.image} 
                     alt={item.title} 
                     className="w-full grayscale hover:grayscale-0 transition-all duration-700 brightness-90 contrast-110"
                   />
-                  <div className="absolute inset-0 bg-primary/10 mix-blend-overlay" />
-                </div>
+                </FilmFrame>
                 
                 {/* Chapter Number */}
-                <div className="absolute -bottom-6 -right-6 md:-right-10 text-8xl md:text-9xl font-display text-primary/20 select-none">
+                <div className="absolute -bottom-8 -right-4 md:-right-10 text-8xl md:text-9xl font-display text-primary/20 select-none">
                   {item.chapter}
                 </div>
               </div>
 
               {/* Text */}
               <div className="flex-1">
-                <div className="text-xs text-primary tracking-[0.3em] mb-3">{item.year}</div>
+                <div className="text-xs text-primary tracking-[0.3em] mb-3 flex items-center gap-3">
+                  <span className="inline-block w-8 h-px bg-primary" />
+                  {item.year}
+                </div>
                 <h3 className="text-4xl md:text-5xl font-display tracking-wider mb-6">{item.title}</h3>
                 <p className="text-lg text-muted-foreground leading-relaxed tracking-wide">
                   {item.description}
                 </p>
                 
-                {/* Decorative Line */}
-                <div className="mt-8 w-20 h-px bg-primary/50" />
+                {/* Film counter decoration */}
+                <div className="mt-8 flex items-center gap-4">
+                  <div className="flex gap-1">
+                    {[1, 2, 3].map(n => (
+                      <div key={n} className="w-2 h-2 border border-muted-foreground/30" />
+                    ))}
+                  </div>
+                  <span className="text-xs text-muted-foreground font-mono tracking-wider">
+                    FRAME {item.chapter} OF 03
+                  </span>
+                </div>
               </div>
             </motion.div>
           ))}
         </div>
+
+        {/* Film reel decoration at bottom */}
+        <motion.div 
+          className="mt-32 flex justify-center"
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true }}
+        >
+          <div className="flex items-center gap-6">
+            <FilmReel />
+            <div className="w-32 h-px bg-gradient-to-r from-primary via-primary/50 to-transparent" />
+            <span className="text-xs text-muted-foreground tracking-[0.3em]">TO BE CONTINUED...</span>
+            <div className="w-32 h-px bg-gradient-to-l from-primary via-primary/50 to-transparent" />
+            <FilmReel />
+          </div>
+        </motion.div>
       </div>
     </section>
+  );
+}
+
+function FilmReel() {
+  return (
+    <div className="relative w-16 h-16">
+      {/* Outer ring */}
+      <div className="absolute inset-0 border-2 border-muted-foreground/30 rounded-full" />
+      {/* Inner ring */}
+      <div className="absolute inset-3 border border-muted-foreground/20 rounded-full" />
+      {/* Center hub */}
+      <div className="absolute inset-6 bg-muted-foreground/10 rounded-full" />
+      {/* Spokes */}
+      {[0, 60, 120, 180, 240, 300].map(deg => (
+        <div 
+          key={deg}
+          className="absolute top-1/2 left-1/2 w-6 h-px bg-muted-foreground/20 origin-left"
+          style={{ transform: `rotate(${deg}deg)` }}
+        />
+      ))}
+    </div>
   );
 }
