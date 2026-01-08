@@ -1,14 +1,10 @@
 import { motion } from "framer-motion";
 import heroBg from "@assets/generated_images/dark_athletic_runner_silhouette.png";
-import { ArrowDown, Volume2, VolumeX } from "lucide-react";
+import { ArrowDown } from "lucide-react"; // Keep ArrowDown
 import { useState } from "react";
 
 export function Hero() {
-  const [musicPlaying, setMusicPlaying] = useState(false);
 
-  const toggleMusic = () => {
-    setMusicPlaying(!musicPlaying);
-  };
 
   return (
     <div className="relative h-screen w-full overflow-hidden flex items-center justify-center film-grain">
@@ -20,19 +16,6 @@ export function Hero() {
         <div className="absolute inset-0 bg-black/50" />
         <div className="absolute inset-0 bg-linear-to-t from-background via-transparent to-transparent" />
       </div>
-
-      {/* Music Toggle */}
-      <button
-        onClick={toggleMusic}
-        data-testid="button-music-toggle"
-        className="absolute top-6 right-6 z-30 p-3 bg-white/10 backdrop-blur-sm border border-white/20 rounded-full hover:bg-white/20 transition-all duration-300 group"
-      >
-        {musicPlaying ? (
-          <Volume2 className="w-5 h-5 text-primary" />
-        ) : (
-          <VolumeX className="w-5 h-5 text-muted-foreground group-hover:text-foreground" />
-        )}
-      </button>
 
       {/* Content */}
       <div className="relative z-10 container mx-auto px-4 text-center">
