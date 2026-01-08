@@ -1,50 +1,73 @@
 import { motion } from "framer-motion";
-import heroBg from "@assets/generated_images/abstract_sunrise_over_soft_hills.png";
-import { ArrowDown } from "lucide-react";
+import heroBg from "@assets/generated_images/dark_athletic_runner_silhouette.png";
+import { ArrowDown, Volume2, VolumeX } from "lucide-react";
+import { useState } from "react";
 
 export function Hero() {
+  const [musicPlaying, setMusicPlaying] = useState(false);
+
+  const toggleMusic = () => {
+    setMusicPlaying(!musicPlaying);
+  };
+
   return (
-    <div className="relative h-[80vh] w-full overflow-hidden flex items-center justify-center">
-      {/* Background Image with Overlay */}
+    <div className="relative h-screen w-full overflow-hidden flex items-center justify-center film-grain">
+      {/* Background Image */}
       <div 
-        className="absolute inset-0 z-0 bg-cover bg-center bg-no-repeat"
+        className="absolute inset-0 z-0 bg-cover bg-center bg-no-repeat scale-105"
         style={{ backgroundImage: `url(${heroBg})` }}
       >
-        <div className="absolute inset-0 bg-white/20 backdrop-blur-[2px]" />
-        <div className="absolute inset-0 bg-linear-to-b from-transparent via-transparent to-background" />
+        <div className="absolute inset-0 bg-black/50" />
+        <div className="absolute inset-0 bg-linear-to-t from-background via-transparent to-transparent" />
       </div>
+
+      {/* Music Toggle */}
+      <button
+        onClick={toggleMusic}
+        data-testid="button-music-toggle"
+        className="absolute top-6 right-6 z-30 p-3 bg-white/10 backdrop-blur-sm border border-white/20 rounded-full hover:bg-white/20 transition-all duration-300 group"
+      >
+        {musicPlaying ? (
+          <Volume2 className="w-5 h-5 text-primary" />
+        ) : (
+          <VolumeX className="w-5 h-5 text-muted-foreground group-hover:text-foreground" />
+        )}
+      </button>
 
       {/* Content */}
       <div className="relative z-10 container mx-auto px-4 text-center">
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
+          initial={{ opacity: 0, y: 40 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, ease: "easeOut" }}
+          transition={{ duration: 1, ease: "easeOut" }}
         >
-          <span className="inline-block px-4 py-1.5 mb-6 text-sm font-medium tracking-wider uppercase bg-white/50 backdrop-blur-md rounded-full text-primary-foreground/80 border border-white/40 shadow-sm text-primary">
-            Daily Dashboard
+          <span className="inline-block px-4 py-1.5 mb-8 text-xs font-medium tracking-[0.3em] uppercase text-muted-foreground border border-muted-foreground/30 rounded-none">
+            YOUR STORY
           </span>
-          <h1 className="text-5xl md:text-7xl font-display font-bold text-foreground mb-6 tracking-tight">
-            You got this, <br />
-            <span className="text-transparent bg-clip-text bg-linear-to-r from-primary to-secondary">
-              Keep going.
-            </span>
+          
+          <h1 className="text-6xl md:text-[10rem] font-display text-foreground mb-4 leading-[0.85] tracking-wider glow-orange">
+            YOU GOT
+            <br />
+            <span className="text-primary">THIS.</span>
           </h1>
-          <p className="text-xl md:text-2xl text-muted-foreground max-w-2xl mx-auto mb-10 font-light leading-relaxed">
-            Every small step is progress. Take a breath, look at how far you've come, and embrace the journey ahead.
+          
+          <p className="text-lg md:text-xl text-muted-foreground max-w-xl mx-auto mt-8 font-light tracking-wide leading-relaxed">
+            Every champion was once a contender who refused to give up.
           </p>
         </motion.div>
 
-        {/* Floating Abstract Shapes */}
-        <motion.div
-          className="absolute -top-20 -left-20 w-64 h-64 bg-secondary/20 rounded-full blur-3xl mix-blend-multiply"
-          animate={{ x: [0, 20, 0], y: [0, -20, 0] }}
-          transition={{ repeat: Infinity, duration: 8, ease: "easeInOut" }}
+        {/* Decorative Lines */}
+        <motion.div 
+          className="absolute left-10 top-1/2 -translate-y-1/2 w-px h-32 bg-linear-to-b from-transparent via-primary/50 to-transparent hidden md:block"
+          initial={{ scaleY: 0 }}
+          animate={{ scaleY: 1 }}
+          transition={{ delay: 0.5, duration: 1 }}
         />
-        <motion.div
-          className="absolute -bottom-20 -right-20 w-80 h-80 bg-primary/20 rounded-full blur-3xl mix-blend-multiply"
-          animate={{ x: [0, -30, 0], y: [0, 20, 0] }}
-          transition={{ repeat: Infinity, duration: 10, ease: "easeInOut" }}
+        <motion.div 
+          className="absolute right-10 top-1/2 -translate-y-1/2 w-px h-32 bg-linear-to-b from-transparent via-primary/50 to-transparent hidden md:block"
+          initial={{ scaleY: 0 }}
+          animate={{ scaleY: 1 }}
+          transition={{ delay: 0.5, duration: 1 }}
         />
       </div>
       
@@ -53,7 +76,7 @@ export function Hero() {
         animate={{ y: [0, 10, 0] }}
         transition={{ repeat: Infinity, duration: 2 }}
       >
-        <ArrowDown className="w-6 h-6 opacity-50" />
+        <ArrowDown className="w-5 h-5" strokeWidth={1} />
       </motion.div>
     </div>
   );

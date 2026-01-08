@@ -5,16 +5,16 @@ import { QuoteCarousel } from "@/components/dashboard/QuoteCarousel";
 
 export default function Dashboard() {
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-background film-grain">
       <Hero />
-      <div className="relative z-10 -mt-20">
-        <StatsGrid />
-      </div>
+      <StatsGrid />
       <StoryTimeline />
       <QuoteCarousel />
       
-      <footer className="py-8 text-center text-muted-foreground text-sm">
-        <p>© 2026 You Got This. Designed with intention.</p>
+      <footer className="py-12 text-center border-t border-border">
+        <p className="text-muted-foreground text-xs tracking-[0.3em]">
+          © 2026 YOU GOT THIS. ALL RIGHTS RESERVED.
+        </p>
       </footer>
     </div>
   );

@@ -1,12 +1,11 @@
 import { motion, AnimatePresence } from "framer-motion";
 import { useState, useEffect } from "react";
-import { Quote } from "lucide-react";
 
 const quotes = [
-  "Believe you can and you're halfway there.",
-  "Your potential is endless. Go do what you were created to do.",
-  "Small steps in the right direction can turn out to be the biggest step of your life.",
-  "Don't watch the clock; do what it does. Keep going."
+  { text: "IMPOSSIBLE IS NOTHING.", author: "Adidas" },
+  { text: "IT'S NOT ABOUT THE SHOES. IT'S ABOUT WHAT YOU DO IN THEM.", author: "Michael Jordan" },
+  { text: "THE ONLY WAY TO PROVE YOU'RE A GOOD SPORT IS TO LOSE.", author: "Ernie Banks" },
+  { text: "HARD WORK BEATS TALENT WHEN TALENT DOESN'T WORK HARD.", author: "Tim Notke" }
 ];
 
 export function QuoteCarousel() {
@@ -20,35 +19,42 @@ export function QuoteCarousel() {
   }, []);
 
   return (
-    <section className="py-20 container mx-auto px-4">
-      <div className="bg-linear-to-br from-primary to-primary/80 rounded-3xl p-10 md:p-20 text-center text-primary-foreground relative overflow-hidden shadow-2xl">
-        {/* Background Patterns */}
-        <div className="absolute top-0 left-0 w-full h-full opacity-10 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-white via-transparent to-transparent" />
+    <section className="py-32 container mx-auto px-4">
+      <div className="relative text-center">
+        {/* Large Background Text */}
+        <div className="absolute inset-0 flex items-center justify-center pointer-events-none select-none">
+          <span className="text-[15vw] font-display text-muted/30 tracking-widest">BELIEVE</span>
+        </div>
         
-        <Quote className="w-12 h-12 mx-auto mb-8 opacity-50" />
-        
-        <div className="relative h-32 md:h-24 flex items-center justify-center">
+        <div className="relative z-10 min-h-[300px] flex flex-col items-center justify-center">
           <AnimatePresence mode="wait">
-            <motion.p
+            <motion.div
               key={index}
-              initial={{ opacity: 0, y: 20 }}
+              initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -20 }}
-              transition={{ duration: 0.5 }}
-              className="text-2xl md:text-4xl font-display font-medium leading-tight max-w-4xl"
+              exit={{ opacity: 0, y: -30 }}
+              transition={{ duration: 0.6 }}
+              className="max-w-4xl"
             >
-              "{quotes[index]}"
-            </motion.p>
+              <p className="text-3xl md:text-6xl font-display tracking-wider leading-tight mb-8">
+                "{quotes[index].text}"
+              </p>
+              <p className="text-sm text-muted-foreground tracking-[0.3em]">
+                — {quotes[index].author.toUpperCase()}
+              </p>
+            </motion.div>
           </AnimatePresence>
         </div>
 
-        <div className="flex justify-center gap-2 mt-8">
+        {/* Progress Dots */}
+        <div className="flex justify-center gap-3 mt-12">
           {quotes.map((_, i) => (
             <button
               key={i}
               onClick={() => setIndex(i)}
-              className={`w-2 h-2 rounded-full transition-all duration-300 ${
-                i === index ? "bg-white w-6" : "bg-white/40 hover:bg-white/60"
+              data-testid={`button-quote-${i}`}
+              className={`h-1 transition-all duration-500 ${
+                i === index ? "bg-primary w-12" : "bg-muted-foreground/30 w-4 hover:bg-muted-foreground/50"
               }`}
             />
           ))}
